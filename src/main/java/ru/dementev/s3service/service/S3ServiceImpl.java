@@ -18,11 +18,12 @@ public class S3ServiceImpl implements S3Service {
     private final AmazonS3 amazonS3;
 
     @Override
-    public String putObject(String bucketName, String key, InputStream inputStream) {
+    public String putObject(String bucketName, String key, InputStream inputStream, long size) {
         if (!amazonS3.doesBucketExistV2(bucketName)) {
             amazonS3.createBucket(bucketName);
         }
         ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(size);
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, inputStream, objectMetadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead);
         amazonS3.putObject(putObjectRequest);

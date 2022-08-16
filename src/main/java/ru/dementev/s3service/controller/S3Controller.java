@@ -39,7 +39,7 @@ public class S3Controller {
     @PostMapping("/v1/upload")
     public String upload(@RequestParam String bucketName, @RequestParam String key, @RequestParam MultipartFile file) throws IOException {
         try (InputStream inputStream = file.getInputStream()) {
-            return s3Service.putObject(bucketName, key, inputStream);
+            return s3Service.putObject(bucketName, key, inputStream, file.getSize());
         }
     }
 }

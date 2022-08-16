@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public interface S3Service {
-    String putObject(String bucketName, String key, InputStream inputStream);
+    String putObject(String bucketName, String key, InputStream inputStream, long size);
 
     ByteBuffer getObject(String bucketName, String key) throws IOException;
 
