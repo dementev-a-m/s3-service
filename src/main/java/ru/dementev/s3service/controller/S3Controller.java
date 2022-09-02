@@ -12,13 +12,14 @@ import ru.dementev.s3service.service.S3Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @RestController
 @Slf4j
 public class S3Controller {
-
 
     private final S3Service s3Service;
 
@@ -37,9 +38,14 @@ public class S3Controller {
     }
 
     @PostMapping("/v1/upload")
-    public String upload(@RequestParam String bucketName, @RequestParam String key, @RequestParam MultipartFile file) throws IOException {
+    public void upload(@RequestParam String bucketName, @RequestParam String key, @RequestParam MultipartFile file) throws IOException {
         try (InputStream inputStream = file.getInputStream()) {
-            return s3Service.putObject(bucketName, key, inputStream, file.getSize());
+             s3Service.putObject(bucketName, key, inputStream, file.getSize());
         }
+    }
+
+    @GetMapping("/v1/url")
+    public URL getPreSignedUrl(@RequestParam String bucketName, @RequestParam String key){
+        return s3Service.getPreSignedUrl(bucketName, key);
     }
 }
